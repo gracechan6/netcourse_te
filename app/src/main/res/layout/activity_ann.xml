@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <include layout="@layout/layout_toolbar"
+        android:id="@+id/toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"/>
+
+    <ScrollView
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/annInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/toolbar"
+                android:layout_marginTop="5dp"
+                android:background="@color/white">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="addasxfdsfsd圣诞贺卡"
+                android:textSize="25dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tcName"
+                android:layout_below="@id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text="发布人：张川 课程：计算机网络"
+                android:textSize="20dp"
+                android:textStyle="normal"/>
+
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_below="@id/tcName"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:text="发布时间："
+                android:textSize="20dp"/>
+
+
+            <TextView
+                android:id="@+id/content"
+                android:textIsSelectable="true"
+                android:layout_below="@id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="  test"
+                android:textSize="20dp"
+                android:textStyle="normal"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/attach"
+                android:layout_below="@id/annInfo"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:drawableLeft="@drawable/attachment"
+                android:drawablePadding="5dp"
+                android:text="存在附件，请去电脑端下载查看！"
+                android:textSize="20dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    tools:context="pers.nbu.netcourse.activity.LoginActivity">
+
+    <include layout="@layout/layout_toolbar"
+        android:id="@+id/toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"/>
+
+    <LinearLayout
+        android:id="@+id/nameL"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/name"
+            android:textSize="22sp"/>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:inputType="number"
+            android:background="@null"
+            android:ems="10"
+            android:id="@+id/name"
+            android:textColor="@color/greyDeep"
+            android:text="124177505"
+            android:textSize="23sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_below="@id/nameL"
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/pwdL"
+        android:layout_below="@id/line"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/pwd"
+            android:textSize="22sp"/>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:inputType="textPassword"
+            android:background="@null"
+            android:ems="10"
+            android:id="@+id/pwd"
+            android:textColor="@color/greyDeep"
+            android:text="124177505"
+            android:textSize="23sp"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_below="@id/pwdL"
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"
+        android:text="登录"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:clickable="true"
+        android:onClick="doSubmit"
+        android:background="@drawable/btn_bgblue_status"/>
+
+</RelativeLayout>

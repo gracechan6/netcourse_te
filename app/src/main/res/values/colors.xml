@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">#00000000</color>
+    <color name="black">#000000</color>
+    <color name="blackb">#80000000</color>
+    <color name="white">#FFF</color>
+    <color name="whiteC">#E0E0E0</color>
+
+    <color name="toolbar_bg">#F7F7F7</color>
+
+    <color name="bottom_text_selected">#B90609</color>
+    <color name="bottom_text">#989898</color>
+    <color name="bottom_bg">#F9F9F9</color>
+
+    <color name="bg">#E5E5E5</color>
+
+    <color name="bg_bottom">#FFF</color>
+    <color name="bg_toolbar">#F7F7F7</color>
+    <color name="red_select">#B70707</color>
+    <color name="grey_default">#7D8188</color>
+
+    <color name="orange">#EB6A14</color>
+    <color name="announ_title">#3F444B</color>
+    <color name="announ_content">#C2C8D0</color>
+    <color name="divider_color">#D1DAE7</color>
+
+    <color name="bg_btn_send">#858E99</color>
+    <color name="bg_btn_send_selected">#858EA9</color>
+
+    <color name="more_tv_select">#D9D9D9</color>
+    <color name="more_tv_nomal">#fff</color>
+    <color name="greyDeep">#676668</color>
+
+    <color name="btn_unClick">#0186D1</color>
+    <color name="btn_Click">#017ABC</color>
+
+</resources>

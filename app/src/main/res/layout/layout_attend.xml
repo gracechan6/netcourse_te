@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/staname"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:ellipsize="end"
+        android:textColor="@color/announ_title"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:maxEms="6"
+        android:text="[正在考勤中]"
+        />
+    <TextView
+        android:id="@+id/title"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/staname"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:maxEms="10"
+        android:textColor="@color/announ_title"
+        android:textSize="20sp"
+        android:text="计算机应用"/>
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/staname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/announ_content"
+        android:textSize="17sp"
+        android:text="状态："/>
+
+    <TextView
+        android:id="@+id/relTime"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="50dp"
+        android:layout_below="@id/staname"
+        android:layout_toRightOf="@id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/announ_content"
+        android:textSize="17sp"
+        android:text="时间："/>
+
+</RelativeLayout>

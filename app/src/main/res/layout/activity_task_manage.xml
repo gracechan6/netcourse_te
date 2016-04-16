@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    tools:context="pers.nbu.netcourse.activity.TaskManageActivity">
+
+    <!--toolbar 工具栏-->
+    <include layout="@layout/layout_toolbar"
+        android:id="@+id/toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"/>
+
+    <!-- 任务-->
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/taskLayout"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/taskLsv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:divider="@color/divider_color"
+            android:dividerHeight="1dp"
+            android:fadeScrollbars="false"
+            android:clipToPadding="false"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>
