@@ -69,6 +69,14 @@
         <!--</LinearLayout>-->
     <!--</ScrollView>-->
 
+    <TextView
+        android:id="@+id/blankView"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp"
+        android:visibility="gone"/>
+
 <!-- 公告-->
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srlayout"

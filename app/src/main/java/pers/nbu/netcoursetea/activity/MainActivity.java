@@ -85,6 +85,8 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
     public static final String PHOTO_TYPE = "PHOTO_TYPE";
     private String headPath;
 
+    private TextView blankView;
+
     //底部导航栏
     private BottomFragment bottomFragment;
     private RadioGroup radioGroup;
@@ -113,6 +115,9 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
      * 初始化控件
      */
     protected void initView(){
+
+        blankView = (TextView) findViewById(R.id.blankView);
+
         annLists = new ArrayList<>();
         taskLists = new ArrayList<>();
 
@@ -252,15 +257,18 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
                     showView(2);setTitle("通知公告");initAnn(2,showNum);
                     break;
                 case R.id.task:
-                    if (PreferenceUtils.getLOGINVAL()) {showView(3);setTitle("任务");initCourse(2);}
+                    setTitle("任务");
+                    if (PreferenceUtils.getLOGINVAL()) {showView(3);initCourse(2);}
                     else showLogin(3);
                     break;
                 case R.id.more:
-                    if (PreferenceUtils.getLOGINVAL()) {showView(4);setTitle("更多");}
+                    setTitle("更多");
+                    if (PreferenceUtils.getLOGINVAL()) {showView(4);}
                     else showLogin(4);
                     break;
                 case R.id.me:
-                    if (PreferenceUtils.getLOGINVAL()) {showView(5);setTitle("我");initMe();}
+                    setTitle("我");
+                    if (PreferenceUtils.getLOGINVAL()) {showView(5);initMe();}
                     else showLogin(5);
                     break;
                 default:
@@ -286,26 +294,34 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
                     taskLayout.setVisibility(View.GONE);
                     more.setVisibility(View.GONE);
                     me.setVisibility(View.GONE);
+                    blankView.setVisibility(View.GONE);
                     break;
             case 3: //index.setVisibility(View.GONE);
                     srlayout.setVisibility(View.GONE);
                     taskLayout.setVisibility(View.VISIBLE);
                     more.setVisibility(View.GONE);
                     me.setVisibility(View.GONE);
+                    blankView.setVisibility(View.GONE);
                     break;
             case 4: //index.setVisibility(View.GONE);
                     srlayout.setVisibility(View.GONE);
                     taskLayout.setVisibility(View.GONE);
                     more.setVisibility(View.VISIBLE);
                     me.setVisibility(View.GONE);
+                    blankView.setVisibility(View.GONE);
                     break;
             case 5: //index.setVisibility(View.GONE);
                     srlayout.setVisibility(View.GONE);
                     taskLayout.setVisibility(View.GONE);
                     more.setVisibility(View.GONE);
                     me.setVisibility(View.VISIBLE);
+                    blankView.setVisibility(View.GONE);
                     break;
-            default:break;
+            default:srlayout.setVisibility(View.GONE);
+                    taskLayout.setVisibility(View.GONE);
+                    more.setVisibility(View.GONE);
+                    me.setVisibility(View.GONE);
+                    blankView.setVisibility(View.VISIBLE);;
         }
     }
 
@@ -686,6 +702,7 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 LogUtil.d("test","不登陆"+ String.valueOf(i));
+                showView(9999);
             }
         });
         builder.setNegativeButton("是", new DialogInterface.OnClickListener() {
@@ -704,20 +721,18 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
         if (requestCode==4){
             if(resultCode == Activity.RESULT_OK) {
                 LogUtil.i("test", "更多返回");
-                showView(4);setTitle("更多");
+                showView(4);
             }
         }else if (requestCode==5){
             if(resultCode == Activity.RESULT_OK) {
                 LogUtil.i("test", "我  返回");
                 showView(5);
-                setTitle("我");
                 initMe();
             }
         }else if (requestCode==3){
             if(resultCode == Activity.RESULT_OK) {
                 LogUtil.i("test", "任务  返回");
                 showView(3);
-                setTitle("任务");
                 initCourse(2);
             }
         }
