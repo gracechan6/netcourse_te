@@ -1,0 +1,257 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    tools:context="pers.nbu.netcoursetea.activity.NewAttendActivity">
+
+    <include layout="@layout/layout_toolbar"
+        android:id="@+id/toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"/>
+    <ScrollView
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:focusableInTouchMode="true">
+
+            <LinearLayout
+                android:id="@+id/spCourse"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1.0"
+                    android:textColor="@color/black"
+                    android:text="课程："/>
+                <Spinner
+                    android:id="@+id/course"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="3.0"/>
+
+                <ImageButton
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1.0"
+                    android:background="@null"
+                    android:src="@drawable/refresh_icon_select"
+                    android:clickable="true"
+                    android:onClick="doRefreshCourse"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/courseShow"
+                android:paddingLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:text="课程："
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/bg"/>
+
+            <LinearLayout
+                android:id="@+id/spAct"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1.0"
+                    android:textColor="@color/black"
+                    android:text="教学班："/>
+
+                <Spinner
+                    android:id="@+id/act"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="3.0"/>
+
+                <ImageButton
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1.0"
+                    android:background="@null"
+                    android:src="@drawable/refresh_icon_select"
+                    android:clickable="true"
+                    android:onClick="doRefreshAct"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/actShow"
+                android:paddingLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:text="教学班："
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/bg"/>
+
+            <LinearLayout
+                android:id="@+id/spWeek"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1.0"
+                    android:textColor="@color/black"
+                    android:text="周次："/>
+
+                <Spinner
+                    android:id="@+id/week"
+                    android:layout_width="0dp"
+                    android:layout_weight="3.0"
+                    android:layout_height="50dp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1.0"
+                    android:layout_height="50dp"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/bg"/>
+
+            <RadioGroup
+                android:id="@+id/attOpen"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:contentDescription="是否直接开始"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="是否直接开始："/>
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    android:text="否"/>
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    android:text="是"/>
+
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    android:text="结束"/>
+            </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/bg"/>
+
+            <RadioGroup
+                android:id="@+id/attClass"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:text="考勤类型："/>
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    android:text="机房考勤"/>
+                <RadioButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    android:text="课堂考勤"/>
+            </RadioGroup>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/bg"/>
+
+
+            <EditText
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="22dp"
+                android:background="@null"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:textColorHint="@color/text_hint"
+                android:hint="备注（可不填）"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/bg"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:background="@color/bg">
+                <Button
+                    android:id="@+id/submit"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:paddingTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="提交"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:clickable="true"
+                    android:onClick="doSubmit"
+                    android:background="@drawable/btn_bgblue_status"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

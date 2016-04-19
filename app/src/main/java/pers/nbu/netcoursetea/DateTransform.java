@@ -38,6 +38,44 @@ public class DateTransform {
     }
 
     /**
+     * 获取现在时间
+     * @return返回字符串格式 yyyy-MM-dd HH:mm:ss
+     */
+
+    public static String getNowDate() {
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault());
+        String dateString = formatter.format(currentTime);
+        return dateString;
+    }
+
+    public final static Date stringToDate(String dateString){
+
+        DateFormat dateFormat;
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINESE);
+
+        Date date = null;
+        try {
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    /**
+     * 获取时间+天数
+     * @return返回字符串格式 yyyy-MM-dd HH:mm:ss
+     */
+
+    public static String getDateLater(Date date,int i) {
+        date.setDate(date.getDate()+i);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault());
+        String dateString = formatter.format(date);
+        return dateString;
+    }
+
+    /**
      * 将String类型时间转成Date类型
      * @param dateString
      * @return

@@ -11,63 +11,63 @@
         android:layout_height="?actionBarSize"/>
 
 <!-- 首页-->
-    <ScrollView
-        android:id="@+id/index"
-        android:layout_below="@id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        android:visibility="gone">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:layout_marginTop="1dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:background="#589DEB"
-                android:textColor="#343434"
-                android:textSize="20sp"
-                android:drawableLeft="@drawable/icon_new"
-                android:drawablePadding="10dp"
-                android:text="最新公告"/>
+    <!--<ScrollView-->
+        <!--android:id="@+id/index"-->
+        <!--android:layout_below="@id/toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="60dp"-->
+        <!--android:visibility="gone">-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
+            <!--<TextView-->
+                <!--android:layout_marginTop="1dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:gravity="center"-->
+                <!--android:background="#589DEB"-->
+                <!--android:textColor="#343434"-->
+                <!--android:textSize="20sp"-->
+                <!--android:drawableLeft="@drawable/icon_new"-->
+                <!--android:drawablePadding="10dp"-->
+                <!--android:text="最新公告"/>-->
 
-            <pers.nbu.netcoursetea.view.ListViewForScrollView
-                android:id="@+id/annShowLsv"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/divider_color"
-                android:dividerHeight="1dp"
-                android:fadeScrollbars="false"
-                android:clipToPadding="false"/>
+            <!--<pers.nbu.netcoursetea.view.ListViewForScrollView-->
+                <!--android:id="@+id/annShowLsv"-->
+                <!--android:background="@color/white"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:divider="@color/divider_color"-->
+                <!--android:dividerHeight="1dp"-->
+                <!--android:fadeScrollbars="true"-->
+                <!--android:clipToPadding="false"/>-->
 
-            <TextView
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:background="#589DEB"
-                android:textColor="#343434"
-                android:textSize="20sp"
-                android:drawableLeft="@drawable/icon_new"
-                android:drawablePadding="10dp"
-                android:text="最新发表的任务"/>
+            <!--<TextView-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:gravity="center"-->
+                <!--android:background="#589DEB"-->
+                <!--android:textColor="#343434"-->
+                <!--android:textSize="20sp"-->
+                <!--android:drawableLeft="@drawable/icon_new"-->
+                <!--android:drawablePadding="10dp"-->
+                <!--android:text="最新发表的任务"/>-->
 
-            <pers.nbu.netcoursetea.view.ListViewForScrollView
-                android:id="@+id/taskShowLsv"
-                android:background="@color/white"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@color/divider_color"
-                android:dividerHeight="1dp"
-                android:fadeScrollbars="false"
-                android:clipToPadding="false"/>
+            <!--<pers.nbu.netcoursetea.view.ListViewForScrollView-->
+                <!--android:id="@+id/taskShowLsv"-->
+                <!--android:background="@color/white"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:divider="@color/divider_color"-->
+                <!--android:dividerHeight="1dp"-->
+                <!--android:fadeScrollbars="true"-->
+                <!--android:clipToPadding="false"/>-->
 
-        </LinearLayout>
-    </ScrollView>
+        <!--</LinearLayout>-->
+    <!--</ScrollView>-->
 
 <!-- 公告-->
     <android.support.v4.widget.SwipeRefreshLayout
@@ -85,7 +85,7 @@
             android:layout_below="@id/toolbar"
             android:divider="@color/divider_color"
             android:dividerHeight="1dp"
-            android:fadeScrollbars="false"
+            android:fadeScrollbars="true"
             android:clipToPadding="false"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -105,7 +105,7 @@
             android:layout_below="@id/toolbar"
             android:divider="@color/divider_color"
             android:dividerHeight="1dp"
-            android:fadeScrollbars="false"
+            android:fadeScrollbars="true"
             android:clipToPadding="false"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -260,7 +260,7 @@
                 android:paddingLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="清除公告数据"
+                android:text="清除本地公告数据"
                 android:paddingRight="25dp"
                 android:clickable="true"
                 android:onClick="doClearAnnData"/>
@@ -276,7 +276,23 @@
                 android:paddingLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="清除任务数据"
+                android:text="清除公告管理数据"
+                android:paddingRight="25dp"
+                android:clickable="true"
+                android:onClick="doClearAnnMData"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/greyDeep"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:background="@drawable/me_tv_selector"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="清除本地任务数据"
                 android:paddingRight="25dp"
                 android:clickable="true"
                 android:onClick="doClearTaskData"/>
@@ -292,23 +308,7 @@
                 android:paddingLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="清除作业上交记录"
-                android:paddingRight="25dp"
-                android:clickable="true"
-                android:onClick="doClearTaskMData"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/greyDeep"
-                android:layout_marginLeft="10dp"/>
-
-            <TextView
-                android:background="@drawable/me_tv_selector"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="清除考勤记录"
+                android:text="清除本地考勤数据"
                 android:paddingRight="25dp"
                 android:clickable="true"
                 android:onClick="doClearAttendData"/>

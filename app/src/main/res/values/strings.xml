@@ -31,6 +31,11 @@
     <string name="title_activity_attend_detail">AttendDetailActivity</string>
     <string name="title_activity_main_activity2">MainActivity2Activity</string>
     <string name="title_activity_ann_manage">AnnManageActivity</string>
+    <string name="title_activity_new_ann">NewAnnActivity</string>
+    <string name="title_activity_task_mana">TaskManaActivity</string>
+    <string name="title_activity_attend_mana">AttendManaActivity</string>
+    <string name="title_activity_new_task">NewTaskActivity</string>
+    <string name="title_activity_new_attend">NewAttendActivity</string>
 
 
 </resources>

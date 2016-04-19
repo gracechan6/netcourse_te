@@ -2,6 +2,12 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/app/src/main/java/pers/nbu/netcoursetea/activity/AnnManageActivity.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/pers/nbu/netcoursetea/activity/MainActivity2Activity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/pers/nbu/netcoursetea/activity/AttendManaActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/pers/nbu/netcoursetea/activity/NewAnnActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/pers/nbu/netcoursetea/activity/NewAttendActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/pers/nbu/netcoursetea/activity/NewTaskActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/pers/nbu/netcoursetea/activity/TaskManaActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/pers/nbu/netcoursetea/db/DBOpenHelper.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/pers/nbu/netcoursetea/entity/AttendInfoEntity.java" charset="UTF-8" />
   </component>
 </project>

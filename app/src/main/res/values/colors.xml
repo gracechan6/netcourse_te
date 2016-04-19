@@ -34,4 +34,6 @@
     <color name="btn_unClick">#0186D1</color>
     <color name="btn_Click">#017ABC</color>
 
+    <color name="text_hint">#C9CFD3</color>
+
 </resources>

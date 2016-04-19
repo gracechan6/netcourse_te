@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -13,10 +15,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -33,14 +37,19 @@ import cz.msebera.android.httpclient.Header;
 import pers.nbu.netcoursetea.BaseApplication;
 import pers.nbu.netcoursetea.JsonTransform;
 import pers.nbu.netcoursetea.R;
+import pers.nbu.netcoursetea.ToastMsg;
 import pers.nbu.netcoursetea.adapter.AnnAdapter;
 import pers.nbu.netcoursetea.adapter.TaskAdapter;
+import pers.nbu.netcoursetea.adapter.TaskInfoAdapter;
 import pers.nbu.netcoursetea.config.SystemConfig;
 import pers.nbu.netcoursetea.db.DB;
 import pers.nbu.netcoursetea.entity.AnnEntity;
+import pers.nbu.netcoursetea.entity.CourseEntity;
 import pers.nbu.netcoursetea.entity.TaskEntity;
+import pers.nbu.netcoursetea.entity.TaskInfoEntity;
 import pers.nbu.netcoursetea.fragment.BottomFragment;
 import pers.nbu.netcoursetea.util.LogUtil;
+import pers.nbu.netcoursetea.util.PhoneScreenUtils;
 import pers.nbu.netcoursetea.util.PreferenceUtils;
 import pers.nbu.netcoursetea.view.ActionSheet;
 import pers.nbu.netcoursetea.view.CircleImageView;
@@ -50,16 +59,20 @@ import pers.nbu.netcoursetea.view.ListViewForScrollView;
 public class MainActivity extends BaseActivity implements ActionSheet.MenuItemClickListener{
 
     /*公告任务栏目需要用到的控件及数据定义*/
-    private SwipeRefreshLayout srlayout,taskLayout;
-    private SwipeMenuListView annLsv,taskLsv;
-    private AnnAdapter annAdapter,annShowAdapter;
-    private TaskAdapter taskAdapter,taskShowAdapter;
+    private SwipeRefreshLayout srlayout;
+    private SwipeMenuListView annLsv;
+    private AnnAdapter annAdapter/*,annShowAdapter*/;
     private List<AnnEntity> annLists;
-    private List<TaskEntity> taskLists;
+
+    private SwipeRefreshLayout taskLayout;
+    private SwipeMenuListView taskLsv;
+    private TaskInfoAdapter taskAdapter;
+    private ArrayList<TaskInfoEntity> taskLists ;
+    private SwipeMenuCreator creator;
 
     /*首页*/
-    private ScrollView index;
-    private ListViewForScrollView annShowLsv,taskShowLsv;
+//    private ScrollView index;
+//    private ListViewForScrollView annShowLsv,taskShowLsv;
 
     /*更多*/
     private LinearLayout more,me;
@@ -93,7 +106,7 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
 
         initToolBar();
 
-        //showView(1);setTitle("高校云课堂");init(1, 3);
+        showView(2);setTitle("通知公告");initAnn(2, showNum);
     }
 
     /**
@@ -104,15 +117,15 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
         taskLists = new ArrayList<>();
 
         //index
-        index = (ScrollView) findViewById(R.id.index);
-        annShowLsv = (ListViewForScrollView) findViewById(R.id.annShowLsv);
-        taskShowLsv = (ListViewForScrollView) findViewById(R.id.taskShowLsv);
-        annShowAdapter = new AnnAdapter(annLists,getApplicationContext());
-        taskShowAdapter = new TaskAdapter(taskLists,getApplicationContext());
-        annShowLsv.setAdapter(annShowAdapter);
-        taskShowLsv.setAdapter(taskShowAdapter);
-        annShowLsv.setOnItemClickListener(annClickListener);
-        taskShowLsv.setOnItemClickListener(annClickListener);
+//        index = (ScrollView) findViewById(R.id.index);
+//        annShowLsv = (ListViewForScrollView) findViewById(R.id.annShowLsv);
+//        taskShowLsv = (ListViewForScrollView) findViewById(R.id.taskShowLsv);
+//        annShowAdapter = new AnnAdapter(annLists,getApplicationContext());
+//        taskShowAdapter = new TaskAdapter(taskLists,getApplicationContext());
+//        annShowLsv.setAdapter(annShowAdapter);
+//        taskShowLsv.setAdapter(taskShowAdapter);
+//        annShowLsv.setOnItemClickListener(annClickListener);
+//        taskShowLsv.setOnItemClickListener(annClickListener);
 
         //AnnShow
         srlayout = (SwipeRefreshLayout) findViewById(R.id.srlayout);
@@ -124,11 +137,72 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
 
         //TaskShow
         taskLayout = (SwipeRefreshLayout) findViewById(R.id.taskLayout);
-        taskLayout.setOnRefreshListener(taskShowRefresh);
+        taskLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initCourse(1);
+            }
+        });
         taskLsv = (SwipeMenuListView) findViewById(R.id.taskLsv);
-        taskAdapter = new TaskAdapter(taskLists,getApplicationContext());
+        taskLists = new ArrayList<>();
+
+        taskAdapter = new TaskInfoAdapter(taskLists,getApplicationContext());
+        initCreator();
+        if (creator != null)
+            taskLsv.setMenuCreator(creator);
+        taskLsv.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu swipeMenu, int index) {
+                switch (index) {
+                    case 0:
+                        // delete
+                        //去服务器端删除该公告，返回true，本地数据库也删除该公告
+                        LogUtil.i("test", getClass().getSimpleName() + "删除当前任务,id:" + taskLists.get(position).getTaskNum());
+                        delTask(taskLists.get(position).getTaskNum());
+                        break;
+                    case 1:
+                        // 未设置
+                        break;
+                }
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
+        taskLsv.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+        taskLsv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                //点击公告进入任务详情页查看
+                if (position + 1 == taskLists.size() && taskLists.get(position).getTaskTitle().equals("LOADINGMORE")) {
+                    showNum += 7;
+                    getTaskFromDB();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), NewTaskActivity.class);
+                    intent.putExtra(SystemConfig.TASKNUM, taskLists.get(position).getTaskNum());
+                    intent.putExtra(SystemConfig.TASKTITLE, taskLists.get(position).getTaskTitle());
+                    intent.putExtra(SystemConfig.TASKREQUIRE, taskLists.get(position).getTaskRequire());
+                    intent.putExtra(SystemConfig.YORNSUB, taskLists.get(position).getYorNSub());
+                    intent.putExtra(SystemConfig.YORNVIS, taskLists.get(position).getYorNVis());
+                    intent.putExtra(SystemConfig.TASKURL, taskLists.get(position).getTaskUrl());
+                    intent.putExtra(SystemConfig.FILEON, taskLists.get(position).getFileOn());
+                    intent.putExtra(SystemConfig.VIDEO, taskLists.get(position).getVideo());
+                    intent.putExtra(SystemConfig.ANNEX, taskLists.get(position).getAnnex());
+                    intent.putExtra(SystemConfig.TASKTIME, taskLists.get(position).getTaskTime());
+                    intent.putExtra(SystemConfig.ENDTIME, taskLists.get(position).getEndTime());
+                    intent.putExtra(SystemConfig.ISSTUDOWN, taskLists.get(position).getIsStuDown());
+                    intent.putExtra(SystemConfig.ISSHOWRESULT, taskLists.get(position).getIsShowResult());
+                    intent.putExtra(SystemConfig.TREEID, taskLists.get(position).getTreeid());
+                    intent.putExtra(SystemConfig.ACTNUM, taskLists.get(position).getActNum());
+                    intent.putExtra(SystemConfig.TREENAME, taskLists.get(position).getTreeName());
+                    intent.putExtra(SystemConfig.COURNAME, taskLists.get(position).getCourseName());
+                    intent.putExtra(SystemConfig.CLASSNAME, taskLists.get(position).getClassName());
+
+                    intent.putExtra("flag", 1);
+                    startActivity(intent);
+                }
+            }
+        });
         taskLsv.setAdapter(taskAdapter);
-        taskLsv.setOnItemClickListener(annClickListener);
 
         //more
         more = (LinearLayout) findViewById(R.id.more);
@@ -145,35 +219,19 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
     protected AdapterView.OnItemClickListener annClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-            if(adapterView.getId()==annLsv.getId() || adapterView.getId()== annShowLsv.getId() ){
-                if (position+1==annLists.size()){
-                    showNum +=7;
-                    getAnnFromDB(2,showNum);
-                }else {
-                    Intent intent = new Intent(getApplicationContext(), AnnActivity.class);
-                    intent.putExtra(SystemConfig.ANNTITLE, annLists.get(position).getAnnTitle());
-                    intent.putExtra(SystemConfig.ANNCON, annLists.get(position).getAnnCon());
-                    intent.putExtra(SystemConfig.ANNTIME, annLists.get(position).getAnnTime());
-                    intent.putExtra(SystemConfig.ANNURL, annLists.get(position).getAnnUrl());
-                    intent.putExtra(SystemConfig.TEACHNAME, annLists.get(position).getTeachName());
-                    intent.putExtra(SystemConfig.COURNAME, annLists.get(position).getCourName());
-                    intent.putExtra(SystemConfig.ANNNUM, annLists.get(position).getAnnNum());
-                    startActivity(intent);
-                }
-            }else if (adapterView.getId()==taskLsv.getId() || adapterView.getId()==taskShowLsv.getId()){
-                if (position+1==taskLists.size()) {
-                    taskShowNum+=7;
-                    getTaskFromDB(3,taskShowNum);
-                }
-                Intent intent = new Intent(getApplicationContext(),TaskShowActivity.class);
-                intent.putExtra(SystemConfig.TASKTITLE, taskLists.get(position).getTaskTitle());
-                intent.putExtra(SystemConfig.TASKREQUIRE,taskLists.get(position).getTaskRequire());
-                intent.putExtra(SystemConfig.TASKTIME,taskLists.get(position).getTaskTime());
-                intent.putExtra(SystemConfig.ENDTIME,taskLists.get(position).getEndTime());
-                intent.putExtra(SystemConfig.TEACHNAME,taskLists.get(position).getTeachName());
-                intent.putExtra(SystemConfig.COURNAME,taskLists.get(position).getCourName());
-                intent.putExtra(SystemConfig.TASKNUM,taskLists.get(position).getTaskNum());
-                intent.putExtra("flag","1");//代表此activity传入
+
+            if (position+1==annLists.size() &&annLists.get(position).getAnnTitle().equals("LOADINGMORE")){
+                showNum +=7;
+                getAnnFromDB(2,showNum);
+            }else {
+                Intent intent = new Intent(getApplicationContext(), AnnActivity.class);
+                intent.putExtra(SystemConfig.ANNTITLE, annLists.get(position).getAnnTitle());
+                intent.putExtra(SystemConfig.ANNCON, annLists.get(position).getAnnCon());
+                intent.putExtra(SystemConfig.ANNTIME, annLists.get(position).getAnnTime());
+                intent.putExtra(SystemConfig.ANNURL, annLists.get(position).getAnnUrl());
+                intent.putExtra(SystemConfig.TEACHNAME, annLists.get(position).getTeachName());
+                intent.putExtra(SystemConfig.COURNAME, annLists.get(position).getCourName());
+                intent.putExtra(SystemConfig.ANNNUM, annLists.get(position).getAnnNum());
                 startActivity(intent);
             }
         }
@@ -187,14 +245,15 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             int rbId = group.getCheckedRadioButtonId();
             switch (rbId) {
-                case R.id.index:
-                    showView(1);setTitle("高校云课堂");init(1,3);
-                    break;
+//                case R.id.index:
+//                    showView(1);setTitle("高校云课堂");init(1,3);
+//                    break;
                 case R.id.message:
                     showView(2);setTitle("通知公告");initAnn(2,showNum);
                     break;
                 case R.id.task:
-                    showView(3);setTitle("任务");//initTask(3,taskShowNum);
+                    if (PreferenceUtils.getLOGINVAL()) {showView(3);setTitle("任务");initCourse(2);}
+                    else showLogin(3);
                     break;
                 case R.id.more:
                     if (PreferenceUtils.getLOGINVAL()) {showView(4);setTitle("更多");}
@@ -216,31 +275,31 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
      */
     protected void showView(int select){
         switch (select){
-            case 1: index.setVisibility(View.VISIBLE);
-                    srlayout.setVisibility(View.GONE);
-                    taskLayout.setVisibility(View.GONE);
-                    more.setVisibility(View.GONE);
-                    me.setVisibility(View.GONE);
-                    break;
-            case 2: index.setVisibility(View.GONE);
+//            case 1: index.setVisibility(View.VISIBLE);
+//                    srlayout.setVisibility(View.GONE);
+//                    taskLayout.setVisibility(View.GONE);
+//                    more.setVisibility(View.GONE);
+//                    me.setVisibility(View.GONE);
+//                    break;
+            case 2: //index.setVisibility(View.GONE);
                     srlayout.setVisibility(View.VISIBLE);
                     taskLayout.setVisibility(View.GONE);
                     more.setVisibility(View.GONE);
                     me.setVisibility(View.GONE);
                     break;
-            case 3: index.setVisibility(View.GONE);
+            case 3: //index.setVisibility(View.GONE);
                     srlayout.setVisibility(View.GONE);
                     taskLayout.setVisibility(View.VISIBLE);
                     more.setVisibility(View.GONE);
                     me.setVisibility(View.GONE);
                     break;
-            case 4: index.setVisibility(View.GONE);
+            case 4: //index.setVisibility(View.GONE);
                     srlayout.setVisibility(View.GONE);
                     taskLayout.setVisibility(View.GONE);
                     more.setVisibility(View.VISIBLE);
                     me.setVisibility(View.GONE);
                     break;
-            case 5: index.setVisibility(View.GONE);
+            case 5: //index.setVisibility(View.GONE);
                     srlayout.setVisibility(View.GONE);
                     taskLayout.setVisibility(View.GONE);
                     more.setVisibility(View.GONE);
@@ -256,7 +315,7 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
      */
 //首页========start
     protected void init(int flag,int num){
-        initAnn(flag, num);
+        //initAnn(flag, num);
         //initTask(flag, num);
     }
 //首页========end
@@ -290,8 +349,7 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
         if (annLists.size()>= 8 && annLists.size()<db.countData(db.TABLE_ANNSHOW)) {
             annLists.add(new AnnEntity("LOADINGMORE","..."));
         }
-        if (flag==1) annShowAdapter.notifyDataSetChanged();
-        else annAdapter.notifyDataSetChanged();
+        annAdapter.notifyDataSetChanged();
     }
     /**
      * 初始化公告信息
@@ -364,66 +422,70 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
 //公告========end
 
 //任务========start
-    /**
-     * 更新本地任务显示数据
-     * @param flag  区分 是首页1显示还是任务栏3显示
-     * @param show 显示数量
-     */
-    protected void getTaskFromDB(int flag,int show){
-        taskLists.clear();
-        taskLists.addAll(db.getTaskShow(show));
-        if (taskLists.size()>= 8 && taskLists.size()<db.countData(db.TABLE_TASKSHOW)) {
-            taskLists.add(new TaskEntity("LOADINGMORE"));
-        }
-        if (flag==1) taskShowAdapter.notifyDataSetChanged();
-        else taskAdapter.notifyDataSetChanged();
-    }
-    /**
-     * 初始化任务信息
-     * @param flag   区分 是首页1显示还是任务栏3显示
-     * @param num 显示条数
-     */
-    protected void initTask(int flag,int num){
-        ArrayList<TaskEntity> arrayList = db.getTaskShow(1);
-        if (arrayList != null && arrayList.size()>0) {
-            LogUtil.d("test","任务，获取到的最后一条任务id"+ String.valueOf(arrayList.get(0).getTaskNum()));
-            getTask(1, arrayList.get(0).getTaskNum(),num,flag);
-        }
-        else
-            getTask(1, 0,num,flag);
-    }
 
     /**
-     * 从服务器端获取数据
-     * @param flag   区分下拉刷新还是进去刷新1
-     * @param taskNum 获取服务器 taskNum 大于 提供的值
-     * @param showTask 从数据库获取显示的数量
-     * @param flags 区分 是首页1显示还是任务栏3显示
+     * 列表添加删除按钮
      */
-    protected void getTask(final int flag,int taskNum, final int showTask, final int flags){
-        AsyncHttpClient client = ((BaseApplication)getApplication()).getSharedHttpClient();
-        RequestParams params = new RequestParams("TaskNum",taskNum);
-        client.post(SystemConfig.URL_GETTASK,params, new JsonHttpResponseHandler(SystemConfig.SERVER_CHAR_SET) {
+    private void initCreator(){
+        creator = new SwipeMenuCreator() {
             @Override
-            public void onStart() {
-                super.onStart();
-                if (flag==1){dialog.show();}
-            }
+            public void create(SwipeMenu swipeMenu) {
+                //create 删除 item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(getApplicationContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                // set item width
+                deleteItem.setWidth(PhoneScreenUtils.getScreenWidth(getApplicationContext())/6);
+                // set a icon
+                deleteItem.setTitle("删除");
+                deleteItem.setTitleColor(Color.WHITE);
+                deleteItem.setTitleSize(18);
 
+                // add to menu
+                swipeMenu.addMenuItem(deleteItem);
+            }
+        };
+    }
+
+
+    private void getTaskFromDB(){
+        taskLists.clear();
+        taskLists.addAll(db.getTaskInfo(showNum,PreferenceUtils.getUserId(getApplicationContext())));
+        if(taskLists.size()>=8 && taskLists.size()<db.countData(db.TABLE_TASKINFO)){
+            taskLists.add(new TaskInfoEntity("LOADINGMORE"));
+        }
+        taskAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 从服务器获取数据更新本地数据库
+     * @param flag 区分下拉刷新 1 还是进入更新2
+     */
+    private void initTaskData(final int flag){
+        ArrayList<TaskInfoEntity> arrayList=db.getTaskInfo(1, PreferenceUtils.getUserId(getApplicationContext()));
+        AsyncHttpClient client = ((BaseApplication)getApplication()).getSharedHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("UserNum", PreferenceUtils.getUserId(getApplicationContext()));
+        if (arrayList != null && arrayList.size()>0)
+            params.put("TaskNum",arrayList.get(0).getTaskNum());
+        else
+            params.put("TaskNum",0);
+
+        client.post(SystemConfig.URL_GETTASKINFO, params, new JsonHttpResponseHandler(SystemConfig.SERVER_CHAR_SET) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     if (response.getBoolean("success") && !response.isNull("returnData")) {
-                        if (jsonTransform.turnToTaskLists(response)) {
-                            getTaskFromDB(flags, showTask);
+                        if (jsonTransform.toTaskInfoLists(response)) {
+                            getTaskFromDB();
                         }
-                        LogUtil.i("success", getClass().getSimpleName()+"task true");
+                        LogUtil.i("success", getClass().getSimpleName() + "Tasktrue");
                     } else {
-                        if (flag==1) {
-                            LogUtil.i("test", getClass().getSimpleName() + "服务器端未有更多的任务发布!");//Toast.makeText(getApplicationContext(), "服务器端未有任务发布!", Toast.LENGTH_SHORT).show();
-                            getTaskFromDB(flags, showTask);
-                        }
-                        else Toast.makeText(getApplicationContext(), "已是最新", Toast.LENGTH_SHORT).show();
+                        if (flag == 2) {
+                            LogUtil.i("test", getClass().getSimpleName() + "服务器端未有更多的任务发布!");
+                            getTaskFromDB();
+                        } else ToastMsg.showToast("已是最新");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -432,40 +494,189 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                LogUtil.e("test", getClass().getSimpleName()+"task连接失败！");
-                if (flag==1)
-                    Toast.makeText(getApplicationContext(), "连接失败", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(getApplicationContext(), "刷新失败", Toast.LENGTH_SHORT).show();
+                LogUtil.e("test", getClass().getSimpleName() + "task连接失败！");
+                if (flag == 2) ToastMsg.showToast("连接失败");
+                else ToastMsg.showToast("刷新失败");
             }
+
 
             @Override
             public void onFinish() {
-                if (flag==1){dialog.dismiss();}
-                else taskLayout.setRefreshing(false);
+                if (flag == 2)
+                    dialog.dismiss();
+                else
+                    taskLayout.setRefreshing(false);
+            }
+        });
+
+    }
+
+    /**
+     * 去服务器删除该条任务
+     * @param num TaskNum
+     */
+    private void delTask(final int num){
+
+        AsyncHttpClient client = ((BaseApplication)getApplication()).getSharedHttpClient();
+        RequestParams params = new RequestParams("TaskNum",num);
+
+        client.post(SystemConfig.URL_DELTASKINFO, params, new JsonHttpResponseHandler(SystemConfig.SERVER_CHAR_SET) {
+            @Override
+            public void onStart() {
+                dialog.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if (response.getBoolean("success") && db.delTaskInfo(num) > 0) {
+                        LogUtil.i("test", getClass().getSimpleName() + "删除任务成功,id:" + num);
+                        getTaskFromDB();
+                    } else {
+                        LogUtil.i("test", getClass().getSimpleName() + "服务器端出现未知错误 无法删除该任务!");
+                        ToastMsg.showToast("服务器端出现未知错误 无法删除该任务!");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                LogUtil.e("test", getClass().getSimpleName() + "task连接失败！");
+                ToastMsg.showToast("连接失败");
+            }
+
+
+            @Override
+            public void onFinish() {
+                dialog.dismiss();
             }
         });
     }
 
-    /**
-     * 任务下拉刷新
-     */
-    SwipeRefreshLayout.OnRefreshListener taskShowRefresh = new SwipeRefreshLayout.OnRefreshListener() {
-        @Override
-        public void onRefresh() {
-            //获取当前任务的最后一条消息的AnnNum，与服务器端比较看最新消息是否为这个id
-            //是，则不操作,否，获取此id后的所有消息，然后保存到本地并更新进度
-            ArrayList<TaskEntity> arrayList = db.getTaskShow(1);
-            if (arrayList != null  && arrayList.size()>0) {
-                LogUtil.d("test", "任务下拉刷新，获取到的最后一条任务id"+String.valueOf(arrayList.get(0).getTaskNum()));
-                getTask(2, arrayList.get(0).getTaskNum(),taskShowNum,3);
+    private void initCourse(final int flag){
+        ArrayList<CourseEntity> cous=new ArrayList<>();
+        cous=db.getCourse(1, PreferenceUtils.getUserId(getApplicationContext()));
+        AsyncHttpClient client=((BaseApplication)getApplication()).getSharedHttpClient();
+        RequestParams requestParams=new RequestParams();
+        requestParams.put("UserNum", PreferenceUtils.getUserId(getApplicationContext()));
+        if (cous!= null && cous.size()>0)
+            requestParams.put("Treeid",cous.get(0).getTreeid());
+        else
+            requestParams.put("Treeid", 0);
+        client.post(SystemConfig.URL_GETCOURSE,requestParams,new JsonHttpResponseHandler(SystemConfig.SERVER_CHAR_SET){
+
+            @Override
+            public void onStart() {
+                if (flag == 2)
+                    dialog.show();
             }
-        }
-    };
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if (response.getBoolean("success") && !response.isNull("returnData")) {
+                        if (jsonTransform.toCourseLists(response)) {
+                            LogUtil.i("success", getClass().getSimpleName() + "更新本地Course成功");
+                        }
+
+                    } else {
+                        LogUtil.i("test", getClass().getSimpleName() + "服务器端未有更多的课程信息发布!");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                LogUtil.e("test", getClass().getSimpleName() + "Course连接失败！");
+                ToastMsg.showToast("连接失败,无法获取更多的课程信息");
+            }
+
+            @Override
+            public void onFinish() {
+                initTree(flag);
+            }
+        });
+    }
+
+    private void initTree(final int flag){
+        AsyncHttpClient client=((BaseApplication)getApplication()).getSharedHttpClient();
+        RequestParams requestParams=new RequestParams();
+        requestParams.put("UserNum", PreferenceUtils.getUserId(getApplicationContext()));
+        requestParams.put("Treeid", db.getLatestTreeId());
+        client.post(SystemConfig.URL_GETTREE, requestParams, new JsonHttpResponseHandler(SystemConfig.SERVER_CHAR_SET) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if (response.getBoolean("success") && !response.isNull("returnData")) {
+                        if (jsonTransform.toTreeLists(response)) {
+                            LogUtil.i("success", getClass().getSimpleName() + "章节信息有更新");
+                        }
+                    } else {
+                        LogUtil.i("test", getClass().getSimpleName() + "服务器端未有更多的章节信息发布!");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                LogUtil.e("test", getClass().getSimpleName() + "Tree连接失败！");
+                ToastMsg.showToast("连接失败,无法获取更多的章节信息");
+            }
+
+            @Override
+            public void onFinish() {
+                initAct(flag);
+            }
+
+        });
+    }
+
+    private void initAct(final int flag){
+        AsyncHttpClient client=((BaseApplication)getApplication()).getSharedHttpClient();
+        RequestParams requestParams=new RequestParams();
+        requestParams.put("UserNum", PreferenceUtils.getUserId(getApplicationContext()));
+        requestParams.put("ActNum", db.getLatestAct());
+        client.post(SystemConfig.URL_GETACT,requestParams,new JsonHttpResponseHandler(SystemConfig.SERVER_CHAR_SET){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    if (response.getBoolean("success") && !response.isNull("returnData")) {
+                        if (jsonTransform.toActLists(response)) {
+                            LogUtil.i("success", getClass().getSimpleName() + "本地教学班信息有更新");
+                        }
+                    } else {
+                        LogUtil.i("test", getClass().getSimpleName() + "服务器端未有更多的活动班信息发布!");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                LogUtil.e("test", getClass().getSimpleName() + "Act连接失败！");
+                ToastMsg.showToast("连接失败,无法获取更多的教学班信息");
+            }
+
+            @Override
+            public void onFinish() {
+                initTaskData(flag);
+            }
+        });
+    }
+
+
+//任务========end
 
     /**
      * 显示登录界面
-     * @param flag 区分点击更多4还是点击我5跳转的
+     * @param flag 区分点击更多4还是点击我5 点击任务3跳转的
      */
     protected void showLogin(final int flag){
         AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
@@ -486,8 +697,6 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
         });
         builder.show();
     }
-//任务========end
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -503,6 +712,13 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
                 showView(5);
                 setTitle("我");
                 initMe();
+            }
+        }else if (requestCode==3){
+            if(resultCode == Activity.RESULT_OK) {
+                LogUtil.i("test", "任务  返回");
+                showView(3);
+                setTitle("任务");
+                initCourse(2);
             }
         }
 
@@ -531,7 +747,7 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
      * @param view
      */
     public void doTaskManage(View view){
-        startActivity(new Intent(getApplicationContext(),TaskManageActivity.class));
+        startActivity(new Intent(getApplicationContext(),TaskManaActivity.class));
     }
 
     /**
@@ -539,7 +755,7 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
      * @param view
      */
     public void doAttendManage(View view){
-        startActivity(new Intent(getApplicationContext(),AttendManageActivity.class));
+        startActivity(new Intent(getApplicationContext(), AttendManaActivity.class));
     }
 
 //更多========end
@@ -573,8 +789,8 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
         builder.setNegativeButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                int re=db.delData(name);
-                LogUtil.i("test", name+"删除了数据总条数："+re);
+                int re = db.delData(name);
+                LogUtil.i("test", name + "删除了数据总条数：" + re);
             }
         });
         builder.show();
@@ -582,23 +798,23 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
 
     public void doClearAnnData(View view){
         LogUtil.i("test", "doClearAnnData");
-
         warnAgain(db.TABLE_ANNSHOW);
+    }
+
+
+    public void doClearAnnMData(View view){
+        LogUtil.i("test", "doClearAnnMData");
+        warnAgain(db.TABLE_ANN);
     }
 
     public void doClearTaskData(View view){
         LogUtil.i("test", "doClearTaskData");
-        warnAgain(db.TABLE_TASKSHOW);
-    }
-
-    public void doClearTaskMData(View view){
-        LogUtil.i("test", "doClearTaskMData");
-        warnAgain(db.TABLE_TASKMANAGESHOW);
+        warnAgain(db.TABLE_TASKINFO);
     }
 
     public void doClearAttendData(View view){
         LogUtil.i("test","doClearAttendData");
-        warnAgain(db.TABLE_ATTENDSHOW);
+        warnAgain(db.TABLE_ATTENDADMIN);
     }
 
     /**

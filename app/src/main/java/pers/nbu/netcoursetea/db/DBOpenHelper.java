@@ -21,18 +21,18 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 
     public final String CREATE_BOOK_COURSE = "create table tbCourse("
             + "Treeid integer ,"
-            + "CourNum integer ,"
+            + "CourNum varchar(50) ,"
             + "CourName varchar(100) )";
 
     public final String CREATE_BOOK_TREE = "create table tbTree("
-            + "Treeid integer primary key,"
-            + "CourNum integer ,"
+            + "Treeid integer,"
+            + "CourNum varchar(20) ,"
             + "TreeName varchar(100) )";
 
     public final String CREATE_BOOK_ACT = "create table tbAct("
-            + "ActNum integer primary key,"
-            + "CourNum integer ,"
-            + "ClassName varchar(100) )";
+            + "ActNum varchar(20),"
+            + "CourNum varchar(20) ,"
+            + "ClassName varchar(50) )";
 
     public final String CREATE_BOOK_ANNShow = "create table tbAnnShow("
             + "AnnId integer primary key autoincrement ,"
@@ -42,7 +42,36 @@ public class DBOpenHelper extends SQLiteOpenHelper {
             + "AnnTime varchar(20) ,"
             + "AnnUrl varchar(200) ,"
             + "TeachName varchar(20) ,"
-            + "CourName varchar(50))";
+            + "CourName varchar(20))";
+
+    public final String CREATE_BOOK_TASKINFO = "create table tbTaskInfo("
+            + "TaskNum integer ,"
+            + "TeachNum varchar(20) ,"
+            + "TaskTitle varchar(100) ,"
+            + "TaskRequire varchar(100) ,"
+            + "YorNSub varchar(10),"
+            + "YorNVis varchar(10),"
+            + "TaskUrl varchar(200),"
+            + "FileOn varchar(10),"
+            + "Video varchar(10),"
+            + "Annex varchar(10),"
+            + "IsStuDown varchar(10) ,"
+            + "IsShowResult varchar(10) ,"
+            + "TaskTime varchar(20) ,"
+            + "EndTime varchar(20),"
+            + "ActNum varchar(20),"
+            + "Treeid integer)";
+
+    public final String CREATE_BOOK_ATTENDADMIN = "create table tbAttendAdmin("
+            + "AttdenceNum varchar(20) ,"
+            + "StatusTime varchar(50) ,"
+            + "TeachNum varchar(20) ,"
+            + "ActNum varchar(20) ,"
+            + "AttOpen integer,"
+            + "AttdenceClass varchar(50),"
+            + "AttdenceWeek varchar(20),"
+            + "PlaceName varchar(50),"
+            + "Remark varchar(50))";
     
 //    public final String CREATE_BOOK_TaskShow = "create table tbTaskShow("
 //            + "TaskId integer primary key autoincrement ,"
@@ -93,6 +122,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_BOOK_ACT);
         db.execSQL(CREATE_BOOK_TREE);
         db.execSQL(CREATE_BOOK_COURSE);
+        db.execSQL(CREATE_BOOK_TASKINFO);
+        db.execSQL(CREATE_BOOK_ATTENDADMIN);
 //        db.execSQL(CREATE_BOOK_TaskShow);
 //        db.execSQL(CREATE_BOOK_TaskManageShow);
 //        db.execSQL(CREATE_BOOK_AttendShow);

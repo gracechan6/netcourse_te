@@ -33,7 +33,8 @@
             android:label="@string/title_activity_task_show" />
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.TaskManageActivity"
             android:label="@string/title_activity_task_manage" />
@@ -47,6 +48,27 @@
         <activity
             android:name=".activity.AnnManageActivity"
             android:label="@string/title_activity_ann_manage" >
+        </activity>
+        <activity
+            android:name=".activity.NewAnnActivity"
+            android:label="@string/title_activity_new_ann"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name=".activity.TaskManaActivity"
+            android:label="@string/title_activity_task_mana" >
+        </activity>
+        <activity
+            android:name=".activity.AttendManaActivity"
+            android:label="@string/title_activity_attend_mana" >
+        </activity>
+        <activity
+            android:name=".activity.NewTaskActivity"
+            android:label="@string/title_activity_new_task" >
+        </activity>
+        <activity
+            android:name=".activity.NewAttendActivity"
+            android:label="@string/title_activity_new_attend" >
         </activity>
     </application>
 

@@ -17,7 +17,9 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <TextView
             android:layout_width="100dp"
@@ -36,7 +38,7 @@
             android:ems="10"
             android:id="@+id/name"
             android:textColor="@color/greyDeep"
-            android:text="124177505"
+            android:text=""
             android:textSize="23sp"/>
     </LinearLayout>
 
@@ -72,7 +74,7 @@
             android:ems="10"
             android:id="@+id/pwd"
             android:textColor="@color/greyDeep"
-            android:text="124177505"
+            android:text=""
             android:textSize="23sp"/>
     </LinearLayout>
 

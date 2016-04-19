@@ -2,24 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg"
-    tools:context="pers.nbu.netcoursetea.activity.AnnManageActivity">
+    tools:context="pers.nbu.netcoursetea.activity.AttendManaActivity">
 
+    <!--toolbar 工具栏-->
     <include layout="@layout/layout_toolbar"
         android:id="@+id/toolbar"
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"/>
 
-
-    <!-- 公告管理 -->
+    <!-- 考勤-->
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/annLayout"
+        android:id="@+id/attendLayout"
         android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
         <com.baoyz.swipemenulistview.SwipeMenuListView
-            android:id="@+id/annLsv"
+            android:id="@+id/attendLsv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
