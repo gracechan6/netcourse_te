@@ -83,7 +83,7 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
     public static int CROP_REQUEST_CODE = 10001;
     public static int Setting = 10002;
     public static final String PHOTO_TYPE = "PHOTO_TYPE";
-    private String headPath;
+    //private String headPath;
 
     private TextView blankView;
 
@@ -214,7 +214,7 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
         //me
         me = (LinearLayout) findViewById(R.id.me);
         ivHead= (CircleImageView) findViewById(R.id.civ_head);
-        headPath=SystemConfig.PATH_HEAD+ PreferenceUtils.getUserId(getApplication())+SystemConfig.HEAD_TYPE;
+        //headPath=SystemConfig.PATH_HEAD+ PreferenceUtils.getUserId(getApplication())+SystemConfig.HEAD_TYPE;
         className = (TextView) findViewById(R.id.className);
         regDate = (TextView) findViewById(R.id.regDate);
         name = (TextView) findViewById(R.id.name);
@@ -259,17 +259,17 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
                 case R.id.task:
                     setTitle("任务");
                     if (PreferenceUtils.getLOGINVAL()) {showView(3);initCourse(2);}
-                    else showLogin(3);
+                    else{showView(9999); showLogin(3);}
                     break;
                 case R.id.more:
                     setTitle("更多");
                     if (PreferenceUtils.getLOGINVAL()) {showView(4);}
-                    else showLogin(4);
+                    else{showView(9999); showLogin(4);}
                     break;
                 case R.id.me:
                     setTitle("我");
                     if (PreferenceUtils.getLOGINVAL()) {showView(5);initMe();}
-                    else showLogin(5);
+                    else{showView(9999); showLogin(5);}
                     break;
                 default:
                     break;
@@ -701,18 +701,20 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
         builder.setPositiveButton("否", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                LogUtil.d("test","不登陆"+ String.valueOf(i));
-                showView(9999);
+                LogUtil.d("test", "不登陆" + String.valueOf(i));
+
             }
         });
         builder.setNegativeButton("是", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                LogUtil.d("test", "登陆"+String.valueOf(i));
+                LogUtil.d("test", "登陆" + String.valueOf(i));
                 startActivityForResult(new Intent(MainActivity.this, LoginActivity.class), flag);
             }
         });
+        builder.setCancelable(false);
         builder.show();
+
     }
 
     @Override
@@ -737,7 +739,7 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
             }
         }
 
-        if (requestCode==CROP_REQUEST_CODE && resultCode== Activity.RESULT_OK){
+        if ((requestCode==CROP_REQUEST_CODE ) && resultCode== Activity.RESULT_OK){
             /*
             * 头像成功了
             * */
@@ -806,6 +808,7 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
             public void onClick(DialogInterface dialogInterface, int i) {
                 int re = db.delData(name);
                 LogUtil.i("test", name + "删除了数据总条数：" + re);
+                ToastMsg.showToast("本地共有" + re + "条数据，已清除完毕！");
             }
         });
         builder.show();
@@ -860,10 +863,13 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
      * 头像显示
      */
     public  void setHead(){
+        String headPath=SystemConfig.PATH_HEAD+ PreferenceUtils.getUserId(getApplication())+SystemConfig.HEAD_TYPE;
         File file=new File(headPath);
         if(file.exists()){
             Bitmap bm= BitmapFactory.decodeFile(headPath);
             ivHead.setImageDrawable(new BitmapDrawable(bm));
+        }else{
+            LogUtil.i("test", getClass().getSimpleName() + "  头像不存在 路径：" + headPath);
         }
     }
 
@@ -875,4 +881,14 @@ public class MainActivity extends BaseActivity implements ActionSheet.MenuItemCl
     }
 
 //我========end
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (taskLayout.getVisibility() == View.VISIBLE)
+        {
+            getTaskFromDB();
+        }
+    }
 }

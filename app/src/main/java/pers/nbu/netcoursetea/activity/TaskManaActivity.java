@@ -184,6 +184,7 @@ public class TaskManaActivity extends BaseActivity {
 
     private void getTaskFromDB(){
         taskLists.clear();
+        LogUtil.i("test" , "更新本地数据："+taskLists.size());
         taskLists.addAll(db.getTaskInfo(showNum,PreferenceUtils.getUserId(getApplicationContext())));
         if(taskLists.size()>=8 && taskLists.size()<db.countData(db.TABLE_TASKINFO)){
             taskLists.add(new TaskInfoEntity("LOADINGMORE"));

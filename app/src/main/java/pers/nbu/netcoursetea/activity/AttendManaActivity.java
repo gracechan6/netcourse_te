@@ -56,7 +56,7 @@ public class AttendManaActivity extends BaseActivity {
         setContentView(R.layout.activity_attend_mana);
 
         initToolBar();
-        setTitle("考勤管理");
+        setTitle("出勤管理");
         setRightOfToolbar(true);
         setLeft("新考勤");
 

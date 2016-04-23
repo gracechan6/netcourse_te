@@ -275,8 +275,8 @@ public class NewAttendActivity extends BaseActivity {
                 setTitle("查看考勤信息");
                 submit.setText("更新");
 
-                actShow.setText("教学班："+className);
-                courseShow.setText("课程："+ courseName);
+                actShow.setText("教学班：" + className);
+                courseShow.setText("课程：" + courseName);
                 actShow.setVisibility(View.VISIBLE);
                 courseShow.setVisibility(View.VISIBLE);
 
@@ -315,7 +315,7 @@ public class NewAttendActivity extends BaseActivity {
         requestParams.put("AttdenceClass",aclass);
         requestParams.put("AttdenceWeek",aweek);
         requestParams.put("PlaceName",pn);
-        requestParams.put("Remark",remark);
+        requestParams.put("Remark", remark);
         if (submit.getText().toString().equals("提交")){
             requestParams.put("UserNum", PreferenceUtils.getUserId(getApplicationContext()));
             requestParams.put("ActNum",actn);
@@ -460,23 +460,22 @@ public class NewAttendActivity extends BaseActivity {
         actLists.clear();
         act_list.clear();
         actLists.addAll(db.getAct(9999, courseNum));
-        for(int i=0;i<actLists.size();i++)
-            act_list.add(actLists.get(i).getClassName());
+        if (actLists.size()>0) {
+            for (int i = 0; i < actLists.size(); i++)
+                act_list.add(actLists.get(i).getClassName());
+            actn = actLists.get(0).getActNum();
+            className = actLists.get(0).getClassName();
+        }
         act_adapter.notifyDataSetChanged();
         if (flag>1)
             dialog.dismiss();
     }
 
     private void initAct(){
-        ArrayList<ActEntity> acts=new ArrayList<>();
-        acts=db.getAct(1, courseNum);
         AsyncHttpClient client=((BaseApplication)getApplication()).getSharedHttpClient();
         RequestParams requestParams=new RequestParams();
         requestParams.put("UserNum", PreferenceUtils.getUserId(getApplicationContext()));
-        if (acts!= null && acts.size()>0)
-            requestParams.put("ActNum",acts.get(0).getActNum());
-        else
-            requestParams.put("ActNum", 0);
+        requestParams.put("ActNum", db.getLatestAct());
         client.post(SystemConfig.URL_GETACT, requestParams, new JsonHttpResponseHandler(SystemConfig.SERVER_CHAR_SET) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

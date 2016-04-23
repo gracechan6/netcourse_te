@@ -251,6 +251,7 @@ public class NewTaskActivity extends BaseActivity {
                 if (actLists != null && actLists.size() > 0) {
                     ac = actLists.get(position).getActNum();
                     className = actLists.get(position).getClassName();
+                    LogUtil.i("testActNum",ac);
                 }
 
             }
@@ -398,7 +399,7 @@ public class NewTaskActivity extends BaseActivity {
      * @param view 更新课程
      */
     public void doRefreshAct(View view){
-        warnAgain(db.TABLE_ACT,"教学班");
+        warnAgain(db.TABLE_ACT, "教学班");
     }
 
     /**
@@ -526,9 +527,10 @@ public class NewTaskActivity extends BaseActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     try {
                         if (response.getBoolean("success")) {
+                            int var=
                             db.updateTaskInfo(new TaskInfoEntity(taskNum, PreferenceUtils.getUserId(getApplicationContext()),
                                     t, r, ys, yv, url, fi, vi, an, start, end, treeId, isdo, isdr, ac));
-                            LogUtil.i("success", getClass().getSimpleName() + "Updatetrue");
+                            LogUtil.i("success", getClass().getSimpleName() + "Updatetrue:"+var);
                             start = end;
                             endTime.setSelection(0,true);
                             ToastMsg.showToast("更新成功");
@@ -558,7 +560,7 @@ public class NewTaskActivity extends BaseActivity {
     private void getCourseFromDB(){
         courseLists.clear();
         course_list.clear();
-        courseLists.addAll(db.getCourse(9999,PreferenceUtils.getUserId(getApplicationContext())));
+        courseLists.addAll(db.getCourse(9999, PreferenceUtils.getUserId(getApplicationContext())));
         for(int i=0;i<courseLists.size();i++)
             course_list.add(courseLists.get(i).getCourName());
         course_adapter.notifyDataSetChanged();
@@ -616,9 +618,14 @@ public class NewTaskActivity extends BaseActivity {
         treeLists.clear();
         tree_list.clear();
         treeLists.addAll(db.getTree(9999, courseNum));
-        for(int i=0;i<treeLists.size();i++)
-            tree_list.add(treeLists.get(i).getTreeName());
+        if (treeLists.size()>0) {
+            for (int i = 0; i < treeLists.size(); i++)
+                tree_list.add(treeLists.get(i).getTreeName());
+            treeId = treeLists.get(0).getTreeid();
+            treeName = treeLists.get(0).getTreeName();
+        }
         tree_adapter.notifyDataSetChanged();
+
         if (flag>1)
             dialog.dismiss();
     }
@@ -628,7 +635,7 @@ public class NewTaskActivity extends BaseActivity {
         RequestParams requestParams=new RequestParams();
         requestParams.put("UserNum", PreferenceUtils.getUserId(getApplicationContext()));
         requestParams.put("Treeid", db.getLatestTreeId());
-        client.post(SystemConfig.URL_GETTREE,requestParams,new JsonHttpResponseHandler(SystemConfig.SERVER_CHAR_SET){
+        client.post(SystemConfig.URL_GETTREE, requestParams, new JsonHttpResponseHandler(SystemConfig.SERVER_CHAR_SET) {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 flag++;
@@ -660,8 +667,12 @@ public class NewTaskActivity extends BaseActivity {
         actLists.clear();
         act_list.clear();
         actLists.addAll(db.getAct(9999, courseNum));
-        for(int i=0;i<actLists.size();i++)
-            act_list.add(actLists.get(i).getClassName());
+        if (actLists.size()>0) {
+            for (int i = 0; i < actLists.size(); i++)
+                act_list.add(actLists.get(i).getClassName());
+            ac = actLists.get(0).getActNum();
+            className = actLists.get(0).getClassName();
+        }
         act_adapter.notifyDataSetChanged();
         if (flag>1)
             dialog.dismiss();

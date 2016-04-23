@@ -161,7 +161,7 @@ public class NewAnnActivity extends BaseActivity {
                 setTitle("查看公告");
                 submit.setText("更新");
 
-                courseName = getIntent().getStringExtra(SystemConfig.COURNAME);
+                //courseName = getIntent().getStringExtra(SystemConfig.COURNAME);
                 courseShow.setText("课程：" + courseName);
                 courseShow.setVisibility(View.VISIBLE);
 

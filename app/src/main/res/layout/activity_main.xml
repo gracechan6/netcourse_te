@@ -192,141 +192,147 @@
     </LinearLayout>
 
 <!-- 我 -->
-    <LinearLayout
-        android:id="@+id/me"
-        android:paddingTop="5dp"
-        android:layout_below="@id/toolbar"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="1dp"
-        android:visibility="gone">
+        android:layout_below="@id/toolbar"
+        android:layout_marginBottom="60dp">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="horizontal"
-            android:background="@color/white">
-
-            <pers.nbu.netcoursetea.view.CircleImageView
-                android:id="@+id/civ_head"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/test_photo"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="25dp"
-                android:clickable="true"
-                android:onClick="showActionSheet"
-                android:background="@drawable/me_tv_selector"/>
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="25dp"
-                android:gravity="center_vertical"
-                android:text=""
-                android:textSize="25sp"
-                android:paddingRight="20dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="15dp"
+            android:id="@+id/me"
+            android:paddingTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/className"
-                android:background="@drawable/me_tv_selector"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
+            android:orientation="vertical"
+            android:layout_marginTop="1dp"
+            android:visibility="gone">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="班级："
-                android:paddingRight="25dp"/>
+                android:layout_height="100dp"
+                android:orientation="horizontal"
+                android:background="@color/white">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/greyDeep"
-                android:layout_marginLeft="10dp"/>
+                <pers.nbu.netcoursetea.view.CircleImageView
+                    android:id="@+id/civ_head"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@drawable/test_photo"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="25dp"
+                    android:clickable="true"
+                    android:onClick="showActionSheet"
+                    android:background="@drawable/me_tv_selector"/>
 
-            <TextView
-                android:id="@+id/regDate"
-                android:background="@drawable/me_tv_selector"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="注册日期："
-                android:paddingRight="25dp"/>
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="25dp"
+                    android:gravity="center_vertical"
+                    android:text=""
+                    android:textSize="25sp"
+                    android:paddingRight="20dp"/>
+            </LinearLayout>
 
-            <TextView
+            <LinearLayout
                 android:layout_marginTop="15dp"
-                android:background="@drawable/me_tv_selector"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="清除本地公告数据"
-                android:paddingRight="25dp"
-                android:clickable="true"
-                android:onClick="doClearAnnData"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/greyDeep"
-                android:layout_marginLeft="10dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <TextView
-                android:background="@drawable/me_tv_selector"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="清除公告管理数据"
-                android:paddingRight="25dp"
-                android:clickable="true"
-                android:onClick="doClearAnnMData"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/greyDeep"
-                android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:id="@+id/className"
+                    android:background="@drawable/me_tv_selector"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="班级："
+                    android:paddingRight="25dp"/>
 
-            <TextView
-                android:background="@drawable/me_tv_selector"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="清除本地任务数据"
-                android:paddingRight="25dp"
-                android:clickable="true"
-                android:onClick="doClearTaskData"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/greyDeep"
-                android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/greyDeep"
+                    android:layout_marginLeft="10dp"/>
 
-            <TextView
-                android:background="@drawable/me_tv_selector"
-                android:gravity="center_vertical"
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="清除本地考勤数据"
-                android:paddingRight="25dp"
-                android:clickable="true"
-                android:onClick="doClearAttendData"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/greyDeep"
-                android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:id="@+id/regDate"
+                    android:background="@drawable/me_tv_selector"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="注册日期："
+                    android:paddingRight="25dp"/>
+
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/me_tv_selector"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="清除本地公告数据"
+                    android:paddingRight="25dp"
+                    android:clickable="true"
+                    android:onClick="doClearAnnData"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/greyDeep"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:background="@drawable/me_tv_selector"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="清除公告管理数据"
+                    android:paddingRight="25dp"
+                    android:clickable="true"
+                    android:onClick="doClearAnnMData"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/greyDeep"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:background="@drawable/me_tv_selector"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="清除本地任务数据"
+                    android:paddingRight="25dp"
+                    android:clickable="true"
+                    android:onClick="doClearTaskData"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/greyDeep"
+                    android:layout_marginLeft="10dp"/>
+
+                <TextView
+                    android:background="@drawable/me_tv_selector"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="清除本地考勤数据"
+                    android:paddingRight="25dp"
+                    android:clickable="true"
+                    android:onClick="doClearAttendData"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/greyDeep"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+    </ScrollView>
 <!--底部导航栏-->
     <fragment
         android:id="@+id/bottomFragment"

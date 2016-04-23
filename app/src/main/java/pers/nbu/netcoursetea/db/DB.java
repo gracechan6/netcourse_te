@@ -679,7 +679,7 @@ public class DB {
         values.put(SystemConfig.TASKTITLE, task.getTaskTitle());
         values.put(SystemConfig.TASKREQUIRE, task.getTaskRequire());
         values.put(SystemConfig.YORNSUB, task.getYorNSub());
-        values.put(SystemConfig.YORNVIS, task.getTeachNum());
+        values.put(SystemConfig.YORNVIS, task.getYorNVis());
         values.put(SystemConfig.FILEON, task.getFileOn());
         values.put(SystemConfig.VIDEO, task.getVideo());
         values.put(SystemConfig.ANNEX, task.getAnnex());
