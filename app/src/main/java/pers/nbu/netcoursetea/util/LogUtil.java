@@ -19,7 +19,7 @@ public class LogUtil {
 
     public static final int NOTHING = 6;
 
-    public static final int LEVEL = VERBOSE ;
+    public static final int LEVEL = 20 ;
     //最后只需将LEVEL 置为NOTHING,程序运行时则不会打印日志
 
     public static void v(String tag,String msg){
